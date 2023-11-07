@@ -83,4 +83,4 @@ Feel free to follow the provided YouTube link to access the video tutorial and u
 
 For further learning and reference, you can explore the following resources:
 
-- [Link 1](https://react.dev/)
+- [React Dev](https://react.dev/)
