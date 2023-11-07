@@ -1,95 +1,77 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client";
+import Image from "next/image";
+import styles from "./page.module.css";
+import Header from "./components/header";
+import Description from "./components/description";
+import Link from "next/link";
+import { useEffect, useMemo, useRef, useState } from "react";
 
-export default function Home() {
+const calculateIncome = () => {
+  let number = 10;
+  for (let i = 0; i < 10000; i++) {
+    number = number + 1;
+  }
+  console.log("Calculating... ");
+};
+
+function Home() {
+  let hideDescription = true;
+
+  const [counter, setCounter] = useState(0);
+  const [success, setSuccess] = useState(false);
+
+
+  const [shouldCalculate, setShouldCalculate] = useState(false);
+  const income = useMemo(() => calculateIncome(), [shouldCalculate]);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleClick = () => {
+    setCounter(counter + 1);
+    //console.log(counter);
+    if (counter === 10) {
+      //setSuccess(true);
+      setShouldCalculate(true);
+    }
+  };
+
+  useEffect(() => {
+    console.log("# Event is Success!");
+  }, [success]);
+
+  useEffect(() => {
+    console.log("## Event is Triggered!");
+  }, [counter]);
+
+  const handleFocus = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+      console.log("Focus on input done");
+    }
+    console.log(inputRef.current?.value);
+  };
+
+  const handleInputChange = (event: any) => {
+    console.log(event.target.value);
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+    <main>
+      <div className={styles.main}>
+        <Header text="Hello from Header" />
+        {hideDescription && <Description />}
+        <Link href="/about">Go to About</Link>
+        <div>Counter: {counter}</div>
+        <h5>inputRef:</h5>
+        <input ref={inputRef} />
+        <h5>handleInputChange:</h5>
+        <input onChange={handleInputChange} />
+        <div>Income: {income}</div>
+        <button onClick={handleClick}>Click to Incrument</button>
+        <button onFocus={handleFocus}>Click to Focus</button>
       </div>
     </main>
-  )
+  );
 }
+
+export default Home;
